@@ -267,7 +267,12 @@ func TestAdvancedFilterAddDel(t *testing.T) {
 			OffMask: 0,
 		},
 	}
-
+	u32SelKeys = append(u32SelKeys, TcU32Key{
+		Mask:    0xffff,
+		Val:     0x3257,
+		Off:     64,
+		OffMask: 0,
+	})
 	handle := MakeHandle(0x0000, 0001)
 	filter := &U32{
 		FilterAttrs: FilterAttrs{
@@ -313,6 +318,9 @@ func TestAdvancedFilterAddDel(t *testing.T) {
 	}
 	if u32.Sel.Hmask != filter.Sel.Hmask {
 		t.Fatal("The endianness of TcU32Key.Sel.Hmask is wrong")
+	}
+	if len(u32.Sel.Keys) != len(filter.Sel.Keys) {
+		t.Fatal("The number of TcU32Sel.Keys is wrong")
 	}
 	for i, key := range u32.Sel.Keys {
 		if key.Mask != filter.Sel.Keys[i].Mask {
